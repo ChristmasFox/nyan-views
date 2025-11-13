@@ -1,26 +1,19 @@
-.container {
-	width: 900px;
-	height: 600px;
-	background: antiquewhite;
-	position: relative;
-	overflow: auto;
-}
-
 .screen_box {
 	width: 600px;
 	height: 600px;
 	background: black;
 	user-select: none;
-}
-
-.drag-container {
-	background: darkred;
 	position: absolute;
-	left: 0;
-	top: 0;
-}
-
-.drag-container.active {
-	border: 1px solid #4e8cff;
+	
+	.drag-container {
+		background: darkred;
+		position: absolute;
+		left: 0;
+		top: 0;
+		
+		&.active {
+			border: 1px solid #4e8cff;
+		}
+	}
 }
 

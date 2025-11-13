@@ -1,8 +1,9 @@
 'use client'
 
 import Canvas from '@/components/edit/canvas';
+import './editLayout.css'
 
-import {useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 
 export default function EditLayout() {
   const [pageScale, setPageScale] = useState(1)
@@ -33,20 +34,53 @@ export default function EditLayout() {
     ]
   })
 
-  function handleAdd() {
-    setPageScale(Number((pageScale + 0.1).toFixed(2)))
-  }
+  const canvasWrapper = useRef<HTMLDivElement | null>(null);
 
-  function handleRemove() {
-    setPageScale(Number((pageScale - 0.1).toFixed(2)))
-  }
+  const handleAdd = useCallback(() => {
+    setPageScale(Number((pageScale + 0.01).toFixed(2)))
+  }, [pageScale])
+
+  const handleRemove = useCallback(() => {
+    setPageScale(Number((pageScale - 0.01).toFixed(2)))
+  }, [pageScale])
+
+  useEffect(() => {
+    const canvasWrapperRef = canvasWrapper.current;
+    const handleWheel = (event: WheelEvent) => {
+      if (event.ctrlKey) {
+        event.preventDefault()
+        event.stopPropagation()
+        if (event.deltaY < 0) {
+          // 鼠标滚轮往下滚动
+          handleAdd()
+        }
+        if (event.deltaY > 0) {
+          // 鼠标滚轮往上滚动
+          handleRemove()
+        }
+      }
+    }
+
+    if (canvasWrapperRef) canvasWrapperRef.addEventListener('wheel', handleWheel, {passive: false})
+    return () => {
+      if (canvasWrapperRef) canvasWrapperRef.removeEventListener('wheel', handleWheel)
+    }
+  }, [canvasWrapper, handleAdd, handleRemove]);
 
   return (
-    <div>
-      layout-edit
-      <button onClick={handleAdd}> + </button>
-      <button onClick={handleRemove}> -</button>
-      <Canvas chartData={chartData} setChartData={setChartData} pageScale={pageScale}></Canvas>
+    <div className="layout">
+      <div className="layout__topbar text-center bg-amber-100 text-amber-600">
+        @nyan-views@nyan-views@nyan-views@nyan-views
+      </div>
+      <div className="layout__wrapper">
+        <div className="left-sidebar text-amber-50">Sidebar Left</div>
+        <div className="main">
+          <div ref={canvasWrapper} className="canvas__wrapper">
+            <Canvas chartData={chartData} setChartData={setChartData} pageScale={pageScale}></Canvas>
+          </div>
+          <div className="canvas__bar"></div>
+        </div>
+      </div>
     </div>
   )
 }

@@ -59,13 +59,9 @@ export default function Canvas({pageScale, chartData, setChartData}: CanvasProps
   }
 
   return (
-    <div className="container">
-      <div className="edit_view">
-        <div id="screen" className="screen_box" style={screenStyle} onClick={handleClick}>
-          <div className="screen">
-            {allRenderList}
-          </div>
-        </div>
+    <div id="screen" className="screen_box" style={screenStyle} onClick={handleClick}>
+      <div className="screen">
+        {allRenderList}
       </div>
     </div>
   )
