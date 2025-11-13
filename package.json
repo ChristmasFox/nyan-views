@@ -1,7 +1,9 @@
 {
   "name": "nyan-views",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
+  "strict": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
