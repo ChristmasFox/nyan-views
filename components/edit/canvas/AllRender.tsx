@@ -1,6 +1,6 @@
 import DragFrame from './DragFrame';
-import {ChartData, ElementData} from '@/components/edit/canvas';
-import {isCtrlEvent} from '@/utils';
+import { ChartData, ElementData } from '@/components/edit/canvas';
+import { isCtrlEvent } from '@/utils';
 
 type Props = {
   pageScale: number,
@@ -9,17 +9,23 @@ type Props = {
   setChartData: React.Dispatch<React.SetStateAction<ChartData>>
 }
 
-export default function AllRender({chartData, elementData, pageScale, setChartData}: Props) {
+export default function AllRender({ chartData, elementData, pageScale, setChartData }: Props) {
   function dragEnd() {
   }
 
   function dragMove(deltaX: number, deltaY: number) {
     const newElements = chartData.elements.map((el) => {
       if (el.active) {
+        let newX = Math.round(el.x + deltaX / pageScale)
+        let newY = Math.round(el.y + deltaY / pageScale)
+
+        newX = Math.max(0, Math.min(newX, chartData.w - el.w));
+        newY = Math.max(0, Math.min(newY, chartData.h - el.h));
+
         return {
           ...el,
-          x: Math.round(el.x + deltaX / pageScale),
-          y: Math.round(el.y + deltaY / pageScale)
+          x: newX,
+          y: newY
         }
       } else {
         return el

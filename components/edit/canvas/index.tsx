@@ -24,7 +24,7 @@ type CanvasProps = {
   setChartData: React.Dispatch<React.SetStateAction<ChartData>>
 }
 
-export default function Canvas({pageScale, chartData, setChartData}: CanvasProps) {
+export default function Canvas({ pageScale, chartData, setChartData }: CanvasProps) {
 
   const screenStyle = {
     transform: `scale(${pageScale})`,

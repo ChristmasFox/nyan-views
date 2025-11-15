@@ -3,7 +3,7 @@
 import Canvas from '@/components/edit/canvas';
 import './editLayout.css'
 
-import {useCallback, useEffect, useRef, useState} from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export default function EditLayout() {
   const [pageScale, setPageScale] = useState(1)
@@ -61,7 +61,7 @@ export default function EditLayout() {
       }
     }
 
-    if (canvasWrapperRef) canvasWrapperRef.addEventListener('wheel', handleWheel, {passive: false})
+    if (canvasWrapperRef) canvasWrapperRef.addEventListener('wheel', handleWheel, { passive: false })
     return () => {
       if (canvasWrapperRef) canvasWrapperRef.removeEventListener('wheel', handleWheel)
     }
@@ -69,7 +69,7 @@ export default function EditLayout() {
 
   return (
     <div className="layout">
-      <div className="layout__topbar text-center bg-amber-100 text-amber-600">
+      <div className="layout__topbar text-center bg-amber-900 text-amber-200">
         @nyan-views@nyan-views@nyan-views@nyan-views
       </div>
       <div className="layout__wrapper">

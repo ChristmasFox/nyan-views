@@ -1,5 +1,5 @@
-import {useCallback, useEffect, useRef, useState} from 'react';
-import {ElementData} from '@/components/edit/canvas';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { ElementData } from '@/components/edit/canvas';
 
 interface Props {
   children: React.ReactNode;
@@ -16,31 +16,31 @@ interface LastStation {
   y: number;
 }
 
-export default function DragFrame({children, elementData, dragMove, dragEnd, onClick, isActive}: Props) {
+export default function DragFrame({ children, elementData, dragMove, dragEnd, onClick, isActive }: Props) {
   const [isDragging, setIsDragging] = useState(false)
 
-  const lastStation = useRef<LastStation>({x: 0, y: 0,})
+  const lastStation = useRef<LastStation>({ x: 0, y: 0, })
   const animationFrame = useRef<number>(0);
   const lastDownTimer = useRef(0);
 
   function handleMouseDown(event: React.MouseEvent) {
-    const {clientX, clientY} = event;
+    const { clientX, clientY } = event;
     setIsDragging(isActive)
-    lastStation.current = {x: clientX, y: clientY}
+    lastStation.current = { x: clientX, y: clientY }
     lastDownTimer.current = Date.now()
   }
 
   const handleMouseMove = useCallback((ev: Event) => {
     const event = ev as MouseEvent
     if (event.buttons == 2 || !isDragging) return
-    const {clientX, clientY} = event;
-    const deltaX = clientX - lastStation.current.x;
-    const deltaY = clientY - lastStation.current.y;
-
-    lastStation.current = {x: clientX, y: clientY}
 
     cancelAnimationFrame(animationFrame.current);
     animationFrame.current = requestAnimationFrame(() => {
+      const { clientX, clientY } = event;
+      const deltaX = clientX - lastStation.current.x;
+      const deltaY = clientY - lastStation.current.y;
+
+      lastStation.current = { x: clientX, y: clientY }
       dragMove(deltaX, deltaY)
     });
   }, [isDragging, dragMove])

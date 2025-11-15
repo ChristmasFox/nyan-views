@@ -1,4 +1,4 @@
-import {defineConfig, globalIgnores} from 'eslint/config';
+import { defineConfig, globalIgnores } from 'eslint/config';
 import nextVitals from 'eslint-config-next/core-web-vitals';
 import nextTs from 'eslint-config-next/typescript';
 
@@ -16,10 +16,11 @@ const eslintConfig = defineConfig([
   {
     rules: {
       eqeqeq: 'off',
-      'no-unused-vars': ['error', {'varsIgnorePattern': '^_'}],
-      'prefer-const': ['error', {'ignoreReadBeforeAssign': true}],
+      'no-unused-vars': ['error', { 'varsIgnorePattern': '^_' }],
+      'prefer-const': ['error', { 'ignoreReadBeforeAssign': true }],
       indent: ['error', 2],
       quotes: ['error', 'single'],
+      'object-curly-spacing': ['error', 'always']
     },
   },
 ]);
