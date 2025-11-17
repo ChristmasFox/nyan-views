@@ -50,15 +50,29 @@ export default function AllRender({ chartData, elementData, pageScale, setChartD
       })
     })
   }
+  function resize(newElementData: ElementData) {
+    setChartData({
+      ...chartData,
+      elements: chartData.elements.map((el) => {
+        if (el.figureId === newElementData.figureId) {
+          return newElementData
+        } else {
+          return el
+        }
+      })
+    })
+  }
 
   return (
     <DragFrame
       isActive={elementData.active}
+      chartData={chartData}
       elementData={elementData}
       pageScale={pageScale}
       dragEnd={dragEnd}
       dragMove={dragMove}
       onClick={handleClick}
+      resize={resize}
     >
       <div>
         name
