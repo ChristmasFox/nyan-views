@@ -75,7 +75,7 @@ export default function EditLayout() {
       </div>
       <div className="layout__wrapper">
         <div className="left-sidebar text-amber-50">
-          <LeftBar></LeftBar>
+          <LeftBar chartData={chartData} setChartData={setChartData} pageScale={pageScale}></LeftBar>
         </div>
         <div className="main">
           <div ref={canvasWrapper} className="canvas__wrapper">
