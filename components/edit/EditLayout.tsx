@@ -4,6 +4,7 @@ import Canvas from '@/components/edit/canvas';
 import './editLayout.css'
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { LeftBar } from '@/components/edit/bar/LeftBar';
 
 export default function EditLayout() {
   const [pageScale, setPageScale] = useState(1)
@@ -73,7 +74,9 @@ export default function EditLayout() {
         @nyan-views@nyan-views@nyan-views@nyan-views
       </div>
       <div className="layout__wrapper">
-        <div className="left-sidebar text-amber-50">Sidebar Left</div>
+        <div className="left-sidebar text-amber-50">
+          <LeftBar></LeftBar>
+        </div>
         <div className="main">
           <div ref={canvasWrapper} className="canvas__wrapper">
             <Canvas chartData={chartData} setChartData={setChartData} pageScale={pageScale}></Canvas>
