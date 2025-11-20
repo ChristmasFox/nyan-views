@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { ChartData, ElementData } from '@/components/edit/canvas';
-import { getNewHandler } from '@/utils/resize';
-import { useDraggable } from '@/hooks/useDraggable';
-import { useResizable } from '@/hooks/useResizable';
-import { getTime } from '@/utils';
+import {useRef} from 'react';
+import {ChartData, ElementData} from '@/components/edit/canvas';
+import {getNewHandler} from '@/utils/resize';
+import {useDraggable} from '@/hooks/useDraggable';
+import {useResizable} from '@/hooks/useResizable';
+import {getTime} from '@/utils';
 
 interface Props {
   chartData: ChartData
@@ -13,15 +13,12 @@ interface Props {
   isActive: boolean;
   onClick: React.MouseEventHandler;
   dragEnd(): void;
-  dragMove(_deltaX: number, _deltaY: number): void;
+
+  dragMove(deltaX: number, deltaY: number): void;
   resize(elementData: ElementData): void;
 }
 
 export default function DragFrame({ chartData, children, elementData, pageScale, dragMove, dragEnd, onClick, isActive, resize }: Props) {
-  const [isDragging, setIsDragging] = useState(false)
-  const [handleType, setHandleType] = useState('')
-
-  const animationFrame = useRef<number>(0);
   const lastDownTimer = useRef(0);
   const wrapper = useRef(null);
 
@@ -41,12 +38,12 @@ export default function DragFrame({ chartData, children, elementData, pageScale,
 
   const resizeFrame = <div>{ resizeHandlerSpan }</div>
 
-  const [handleMouseMoveDrag, handleMouseUpDrag, handleMouseDownDrag] = useDraggable({
+  const [handleMouseDownDrag] = useDraggable({
     dragMove,
     dragEnd
   })
 
-  const [handleMouseMoveResize, handleMouseUpResize, handleMouseDownResize] = useResizable({
+  const [handleMouseDownResize] = useResizable({
     wrapper,
     chartData,
     elementData,
@@ -56,13 +53,11 @@ export default function DragFrame({ chartData, children, elementData, pageScale,
 
   function handleMouseDown(event: React.MouseEvent) {
     lastDownTimer.current = getTime()
-    setIsDragging(true)
 
-    if (event.target.dataset.resizetype) {
-      setHandleType('resize')
+    const target = event.target as HTMLElement;
+    if (target.dataset.resizetype) {
       handleMouseDownResize(event)
     } else {
-      setHandleType('drag')
       handleMouseDownDrag(event)
     }
   }
@@ -74,44 +69,6 @@ export default function DragFrame({ chartData, children, elementData, pageScale,
       onClick(event)
     }
   }
-
-  const handleMouseMove = useCallback((ev: Event) => {
-    const event = ev as MouseEvent
-    if (event.buttons == 2 || !isDragging) return
-    cancelAnimationFrame(animationFrame.current);
-    animationFrame.current = requestAnimationFrame(() => {
-      if (handleType === 'resize') {
-        handleMouseMoveResize(event)
-      } else {
-        handleMouseMoveDrag(event)
-      }
-    })
-  }, [isDragging, handleType, handleMouseMoveResize, handleMouseMoveDrag])
-
-  const handleMouseUp = useCallback((ev: Event) => {
-    setIsDragging(false)
-    const event = ev as MouseEvent
-    if (handleType === 'resize') {
-      handleMouseUpResize(event)
-    } else {
-      handleMouseUpDrag(event)
-    }
-  }, [handleType, handleMouseUpResize, handleMouseUpDrag])
-
-  useEffect(() => {
-    if (isDragging) {
-      document.addEventListener('mousemove', handleMouseMove, false);
-      document.addEventListener('mouseup', handleMouseUp, false);
-    } else {
-      document.removeEventListener('mousemove', handleMouseMove, false);
-      document.removeEventListener('mouseup', handleMouseUp, false);
-    }
-    return () => {
-      cancelAnimationFrame(animationFrame.current);
-      document.removeEventListener('mousemove', handleMouseMove, false);
-      document.removeEventListener('mouseup', handleMouseUp, false);
-    }
-  }, [isDragging, handleMouseMove, handleMouseUp]);
 
   return (
     <div

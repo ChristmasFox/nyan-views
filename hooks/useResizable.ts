@@ -1,9 +1,9 @@
-import { useRef, useCallback } from 'react';
-import { ChartData, ElementData } from '@/components/edit/canvas';
-import { getPoints, getSize, heightMap, pointMap, rad2deg, tr2bl, widthMap } from '@/utils/resize';
+import {useEffect, useRef} from 'react';
+import {ChartData, ElementData} from '@/components/edit/canvas';
+import {getPoints, getSize, heightMap, pointMap, rad2deg, tr2bl, widthMap} from '@/utils/resize';
 
 interface ResizableProps {
-  wrapper: any
+  wrapper: React.RefObject<HTMLElement | null>;
   chartData: ChartData
   elementData: ElementData
   pageScale: number
@@ -23,21 +23,49 @@ interface ParentRect {
 }
 
 type ResizableReturns = [
-  (event: MouseEvent) => void,
-  (event: MouseEvent) => void,
-  (event: MouseEvent) => void
+  (event: React.MouseEvent) => void
 ]
 
-
 export const useResizable = ({ wrapper, chartData, elementData, resize, pageScale } : ResizableProps): ResizableReturns => {
-  const _resizeOpt = useRef<ResizeOpt>(null)
-  const _parentRect = useRef<ParentRect>(null)
+  const _resizeOpt = useRef<ResizeOpt>(undefined)
+  const _parentRect = useRef<ParentRect>(undefined)
+  const animationFrame = useRef<number>(0);
 
-  const handleMouseDown = (event: React.MouseEvent) => {
-    const { clientX, clientY, target } = event;
-    _parentRect.current = wrapper.current?.parentNode.getBoundingClientRect();
-    if (!_parentRect.current) return
+  const resizeRef = useRef(resize);
+
+  // 保持回调最新 (解决闭包问题)
+  useEffect(() => {
+    resizeRef.current = resize;
+  });
+
+  function handleMouseDown(event: React.MouseEvent) {
+    _parentRect.current = wrapper?.current?.parentElement?.getBoundingClientRect();
+    resizeOnMouseDown(event)
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  }
+
+  function handleMouseMove(event: MouseEvent) {
+    if (event.buttons == 2) return
+    cancelAnimationFrame(animationFrame.current);
+    animationFrame.current = requestAnimationFrame(() => {
+      resizeOnMove(event)
+    })
+  }
+
+  function handleMouseUp() {
+    cancelAnimationFrame(animationFrame.current);
+    document.removeEventListener('mousemove', handleMouseMove);
+    document.removeEventListener('mouseup', handleMouseUp);
+  }
+
+  function resizeOnMouseDown(event: React.MouseEvent) {
+    const target = event.target as HTMLElement;
     const type = target.dataset.resizetype;
+    if (!_parentRect.current || !type) return
+
+    const {clientX, clientY} = event;
+
     const matrix = getPoints(elementData);
     let pressAngle;
     const opposite = matrix[pointMap[type]];
@@ -64,11 +92,10 @@ export const useResizable = ({ wrapper, chartData, elementData, resize, pageScal
     };
   }
 
-  const handleMouseMove = useCallback((ev: Event) => {
-    const event = ev as MouseEvent
+  function resizeOnMove(event: MouseEvent) {
     if (!_parentRect.current || !_resizeOpt.current) return
-    const { clientX, clientY } = event;
 
+    const { clientX, clientY } = event;
     const { opposite, type, pressAngle, startAngle } = _resizeOpt.current
     let {
       currentRatio,
@@ -116,13 +143,8 @@ export const useResizable = ({ wrapper, chartData, elementData, resize, pageScal
     transform.y = Math.max(0, Math.min(transform.y, chartData.h - transform.h));
     _resizeOpt.current.currentRatio = currentRatio;
 
-    resize({
-      ...transform
-    })
-  }, [chartData, elementData, pageScale, resize])
+    resizeRef.current({...transform})
+  }
 
-  const handleMouseUp = useCallback((ev: Event) => {
-  }, [])
-
-  return [handleMouseMove, handleMouseUp, handleMouseDown]
+  return [handleMouseDown]
 }

@@ -1,5 +1,5 @@
 import Matrix from '@/utils/Matrix';
-import { Points, ResizeMap, Size } from '@/types/common';
+import {Points, ResizeMap, Size} from '@/types/common';
 
 const handlerMap: ResizeMap = { 'tl' : 0, 'tm' : 1, 'tr' : 2, 'r' : 3, 'br' : 4, 'bm' : 5, 'bl' : 6, 'l' : 7 }
 const cursorMap = ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w']
@@ -48,7 +48,7 @@ export function getPoints({ x, y, w, h, r }: Points){
     [wc, -hc],
     [-wc, -hc]
   ])
-  return deg.dot(rect.T()).T().valueOf().map(item=>{
+  return deg.dot(rect.T()).T().valueOf().map((item: [number, number]) => {
     return { x : Math.floor(item[0] + wc + x), y : Math.floor(-(item[1] - hc) + y) }
   })
 }
