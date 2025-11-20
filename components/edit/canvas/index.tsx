@@ -59,7 +59,14 @@ export default function Canvas({ pageScale, chartData, setChartData }: CanvasPro
   }
 
   return (
-    <div id="screen" className="screen_box" style={screenStyle} onClick={handleClick}>
+    <div
+      id="screen"
+      className="screen_box"
+      style={screenStyle}
+      onClick={handleClick}
+      onDragOver={(e) => e.preventDefault()}
+      onDragEnter={(e) => e.preventDefault()}
+    >
       <div className="screen">
         {allRenderList}
       </div>
