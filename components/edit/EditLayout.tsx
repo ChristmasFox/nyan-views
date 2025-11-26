@@ -1,11 +1,11 @@
 'use client'
 
-import Canvas from '@/components/edit/canvas';
+import Canvas from '@/components/edit/canvas'
 import './editLayout.css'
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { LeftBar } from '@/components/edit/bar/LeftBar';
-import { ChartData } from '@/utils';
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { LeftBar } from '@/components/edit/bar/LeftBar'
+import { ChartData } from '@/utils'
 
 interface EditLayoutProps {
   displayData: ChartData,
@@ -16,7 +16,7 @@ export default function EditLayout({ displayId, displayData }: EditLayoutProps) 
   const [pageScale, setPageScale] = useState(1)
   const [chartData, setChartData] = useState<ChartData>({ ...displayData })
 
-  const canvasWrapper = useRef<HTMLDivElement | null>(null);
+  const canvasWrapper = useRef<HTMLDivElement | null>(null)
 
   const handleAdd = useCallback(() => {
     setPageScale(Number((pageScale + 0.01).toFixed(2)))
@@ -27,7 +27,7 @@ export default function EditLayout({ displayId, displayData }: EditLayoutProps) 
   }, [pageScale])
 
   useEffect(() => {
-    const canvasWrapperRef = canvasWrapper.current;
+    const canvasWrapperRef = canvasWrapper.current
     const handleWheel = (event: WheelEvent) => {
       if (event.ctrlKey) {
         event.preventDefault()
@@ -47,23 +47,23 @@ export default function EditLayout({ displayId, displayData }: EditLayoutProps) 
     return () => {
       if (canvasWrapperRef) canvasWrapperRef.removeEventListener('wheel', handleWheel)
     }
-  }, [canvasWrapper, handleAdd, handleRemove]);
+  }, [canvasWrapper, handleAdd, handleRemove])
 
   async function handleSave() {
     const response = await fetch('/api/display/saveDisplay', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         id: displayId,
         displayData: {
           ...chartData,
           elements: [
-            ...chartData.elements.map((e) => ({ ...e, active: false })),
+            ...chartData.elements.map((e) => ({ ...e, active: false }))
           ]
-        },
-      }),
+        }
+      })
     })
     const data = await response.json()
     if (data.success) {

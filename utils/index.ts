@@ -43,7 +43,7 @@ export function getComponentDraggedPosition(
   elementW: number = 0,
   elementH: number = 0,
   canvasPosition: DOMRect,
-  pageScale: number = 1,
+  pageScale: number = 1
 ): [number, number] {
   let posX: number = 0
   let posY: number = 0

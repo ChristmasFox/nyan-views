@@ -1,6 +1,6 @@
 import './css/index.css'
-import AllRender from '@/components/edit/canvas/AllRender';
-import { ChartData } from '@/utils';
+import AllRender from '@/components/edit/canvas/AllRender'
+import { ChartData } from '@/utils'
 
 type CanvasProps = {
   pageScale: number,
@@ -9,7 +9,6 @@ type CanvasProps = {
 }
 
 export default function Canvas({ pageScale, chartData, setChartData }: CanvasProps) {
-
   const screenStyle = {
     transform: `scale(${pageScale})`,
     transformDrag: `1/scale(${pageScale})`,

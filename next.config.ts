@@ -1,4 +1,4 @@
-import type { NextConfig } from 'next';
+import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
     const fileLoaderRule = config.module.rules.find(
       (rule: { test?: RegExp; resourceQuery?: { not: RegExp[] } }) =>
         rule.test?.test?.('.svg')
-    );
+    )
 
     // 添加两个规则：一个用于 ?url 模式，另一个用于默认的 SVGR 转换
     config.module.rules.push(
@@ -17,7 +17,7 @@ const nextConfig: NextConfig = {
         // 保留现有文件 loader 处理 *.svg?url 的情况
         ...fileLoaderRule,
         test: /\.svg$/i,
-        resourceQuery: /url/, // *.svg?url
+        resourceQuery: /url/ // *.svg?url
       },
       {
         // 对于其他 *.svg 导入使用 SVGR 转换
@@ -35,29 +35,29 @@ const nextConfig: NextConfig = {
                 plugins: [
                   {
                     name: 'removeAttrs',
-                    params: { attrs: '(fill|stroke)' },
-                  },
-                ],
-              },
-            },
-          },
-        ],
+                    params: { attrs: '(fill|stroke)' }
+                  }
+                ]
+              }
+            }
+          }
+        ]
       }
-    );
+    )
 
     // 修改原有文件 loader 排除 *.svg 文件
-    fileLoaderRule.exclude = /\.svg$/i;
+    fileLoaderRule.exclude = /\.svg$/i
 
-    return config;
+    return config
   },
   turbopack: {
     rules: {
       '*.svg': {
         loaders: ['@svgr/webpack'],
-        as: '*.js',
-      },
-    },
+        as: '*.js'
+      }
+    }
   }
-};
+}
 
-export default nextConfig;
+export default nextConfig

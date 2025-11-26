@@ -1,6 +1,6 @@
-import SvgIcon from '@/components/svgIcon';
+import SvgIcon from '@/components/svgIcon'
 import styles from './leftBar.module.css'
-import { ChartData, ElementData, getComponentDraggedPosition, isMouseInnerCanvas } from '@/utils';
+import { ChartData, ElementData, getComponentDraggedPosition, isMouseInnerCanvas } from '@/utils'
 import { useEffect, useRef } from 'react'
 
 interface LeftBarProps {
@@ -12,11 +12,11 @@ interface LeftBarProps {
 export function LeftBar({ chartData, setChartData, pageScale }: LeftBarProps) {
   const drag = useRef<boolean>(false)
   const canvasPosition = useRef<DOMRect>(undefined)
-  const nextFigureIdRef = useRef<number>(0);
+  const nextFigureIdRef = useRef<number>(0)
 
   function addComponentToCanvas(clientX?: number, clientY?: number) {
-    const nextFigureId = nextFigureIdRef.current + 1;
-    nextFigureIdRef.current = nextFigureId;
+    const nextFigureId = nextFigureIdRef.current + 1
+    nextFigureIdRef.current = nextFigureId
 
     // 新增图表
     const element: ElementData = {
@@ -27,7 +27,7 @@ export function LeftBar({ chartData, setChartData, pageScale }: LeftBarProps) {
       r: 0,
       figureId: nextFigureId,
       active: true,
-      isHide: false,
+      isHide: false
     }
 
     if (drag.current && canvasPosition.current) {
@@ -72,13 +72,13 @@ export function LeftBar({ chartData, setChartData, pageScale }: LeftBarProps) {
   // 初始化 nextFigureId
   useEffect(() => {
     if (chartData.elements.length > 0) {
-      nextFigureIdRef.current = Math.max(...chartData.elements.map(e => e.figureId));
+      nextFigureIdRef.current = Math.max(...chartData.elements.map((e) => e.figureId))
     }
-  }, [chartData]);
+  }, [chartData])
 
   useEffect(() => {
     canvasPosition.current = document.getElementById('screen')?.getBoundingClientRect()
-  }, []);
+  }, [])
 
 
   return (

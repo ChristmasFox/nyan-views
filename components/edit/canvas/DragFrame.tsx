@@ -1,8 +1,8 @@
-import { useRef } from 'react';
-import { ChartData, ElementData, getTime } from '@/utils';
-import { getNewHandler } from '@/utils/resize';
-import { useDraggable } from '@/hooks/useDraggable';
-import { useResizable } from '@/hooks/useResizable';
+import { useRef } from 'react'
+import { ChartData, ElementData, getTime } from '@/utils'
+import { getNewHandler } from '@/utils/resize'
+import { useDraggable } from '@/hooks/useDraggable'
+import { useResizable } from '@/hooks/useResizable'
 
 interface Props {
   chartData: ChartData
@@ -18,12 +18,12 @@ interface Props {
 }
 
 export default function DragFrame({ chartData, children, elementData, pageScale, dragMove, dragEnd, onClick, isActive, resize }: Props) {
-  const lastDownTimer = useRef(0);
-  const wrapper = useRef(null);
+  const lastDownTimer = useRef(0)
+  const wrapper = useRef(null)
 
   const resizeHandler: string[] = ['tl', 'tm', 'tr', 'r', 'br', 'bm', 'bl', 'l']
   const resizeHandlerSpan: React.ReactElement[] = []
-  resizeHandler.forEach(item => {
+  resizeHandler.forEach((item) => {
     const style = getNewHandler(item)
     resizeHandlerSpan.push(
       <span
@@ -53,7 +53,7 @@ export default function DragFrame({ chartData, children, elementData, pageScale,
   function handleMouseDown(event: React.MouseEvent) {
     lastDownTimer.current = getTime()
 
-    const target = event.target as HTMLElement;
+    const target = event.target as HTMLElement
     if (target.dataset.resizetype) {
       handleMouseDownResize(event)
     } else {
@@ -62,7 +62,7 @@ export default function DragFrame({ chartData, children, elementData, pageScale,
   }
 
   function handleClick(event: React.MouseEvent) {
-    event.stopPropagation();
+    event.stopPropagation()
 
     if (getTime() - lastDownTimer.current < 200) {
       onClick(event)
@@ -74,9 +74,9 @@ export default function DragFrame({ chartData, children, elementData, pageScale,
       ref={wrapper}
       className={isActive ? 'drag-container active' : 'drag-container'}
       style={{
-        width: elementData.w + 'px',
-        height: elementData.h + 'px',
-        transform: `translate(${elementData.x}px, ${elementData.y}px)`,
+        width: `${elementData.w}px`,
+        height: `${elementData.h}px`,
+        transform: `translate(${elementData.x}px, ${elementData.y}px)`
       }}
       onClick={handleClick}
       onMouseDown={handleMouseDown}

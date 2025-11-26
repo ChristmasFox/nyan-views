@@ -1,5 +1,5 @@
-import DragFrame from './DragFrame';
-import { ChartData, ElementData, isCtrlEvent } from '@/utils';
+import DragFrame from './DragFrame'
+import { ChartData, ElementData, isCtrlEvent } from '@/utils'
 
 type Props = {
   pageScale: number,
@@ -18,8 +18,8 @@ export default function AllRender({ chartData, elementData, pageScale, setChartD
         let newX = Math.round(el.x + deltaX / pageScale)
         let newY = Math.round(el.y + deltaY / pageScale)
 
-        newX = Math.max(0, Math.min(newX, chartData.w - el.w));
-        newY = Math.max(0, Math.min(newY, chartData.h - el.h));
+        newX = Math.max(0, Math.min(newX, chartData.w - el.w))
+        newY = Math.max(0, Math.min(newY, chartData.h - el.h))
 
         return {
           ...el,
@@ -38,7 +38,7 @@ export default function AllRender({ chartData, elementData, pageScale, setChartD
   }
 
   function handleClick(event: React.MouseEvent) {
-    const isCtrl = isCtrlEvent(event);
+    const isCtrl = isCtrlEvent(event)
     setChartData({
       ...chartData,
       elements: chartData.elements.map((el) => {

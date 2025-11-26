@@ -1,6 +1,6 @@
-import SvgIcons from '@/icon';
+import SvgIcons from '@/icon'
 
-import React, { FC, SVGProps } from 'react';
+import React, { FC, SVGProps } from 'react'
 
 interface SvgIconProps extends SVGProps<SVGSVGElement> {
   name: string;
@@ -19,11 +19,11 @@ const SvgIcon: FC<SvgIconProps> = ({
   className = '',
   ...props
 }) => {
-  const IconComponent = SvgIcons[name];
+  const IconComponent = SvgIcons[name]
 
   if (!IconComponent) {
-    console.warn(`SvgIcon: Icon with name "${name}" not found.`);
-    return null;
+    console.warn(`SvgIcon: Icon with name "${name}" not found.`)
+    return null
   }
 
   return (
@@ -34,7 +34,7 @@ const SvgIcon: FC<SvgIconProps> = ({
       className={`inline-block align-[-0.15em] ${className}`}
       {...props}
     />
-  );
-};
+  )
+}
 
-export default SvgIcon;
+export default SvgIcon

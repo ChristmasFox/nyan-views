@@ -2,7 +2,7 @@
  * @description: 定义 Schema (数据模型)
  */
 
-import { integer, pgTable, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core';
+import { integer, pgTable, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core'
 
 // 表定义
 export const counterSchema = pgTable('counter', {
@@ -12,8 +12,8 @@ export const counterSchema = pgTable('counter', {
     .defaultNow()
     .$onUpdate(() => new Date())
     .notNull(),
-  createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
-});
+  createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull()
+})
 
 export const displaySchema = pgTable('display', {
   id: serial('id').primaryKey(),
@@ -23,5 +23,5 @@ export const displaySchema = pgTable('display', {
     .defaultNow()
     .$onUpdate(() => new Date())
     .notNull(),
-  createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
+  createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull()
 })

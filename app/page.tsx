@@ -1,5 +1,5 @@
-import HomePage from '@/components/home/HomePage';
-import { db } from '@/libs/DB';
+import HomePage from '@/components/home/HomePage'
+import { db } from '@/libs/DB'
 
 export interface DisplayGroup {
   id: number;
@@ -11,7 +11,7 @@ export default async function Home() {
     columns: {
       displayData: false,
       createdAt: false,
-      updatedAt: false,
+      updatedAt: false
     }
   })
 
@@ -19,5 +19,5 @@ export default async function Home() {
     <>
       <HomePage displayGroups={displayGroups}></HomePage>
     </>
-  );
+  )
 }

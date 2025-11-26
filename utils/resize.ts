@@ -1,9 +1,8 @@
-import Matrix from '@/utils/Matrix';
-import { Points, ResizeMap, Size } from '@/types/common';
+import Matrix from '@/utils/Matrix'
+import { Points, ResizeMap, Size } from '@/types/common'
 
 const handlerMap: ResizeMap = { 'tl' : 0, 'tm' : 1, 'tr' : 2, 'r' : 3, 'br' : 4, 'bm' : 5, 'bl' : 6, 'l' : 7 }
 const cursorMap = ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w']
-
 
 
 export const pointMap: ResizeMap = {
@@ -30,14 +29,14 @@ export const tr2bl: ResizeMap = {
   r : 1,
   l : 1
 }
-export function deg2rad(deg: number){
+export function deg2rad(deg: number) {
   return deg * Math.PI / 180
 }
 
-export function rad2deg(rad: number){
+export function rad2deg(rad: number) {
   return rad * 180 / Math.PI
 }
-export function getPoints({ x, y, w, h, r }: Points){
+export function getPoints({ x, y, w, h, r }: Points) {
   const a = r * Math.PI / 180
   const wc = w / 2
   const hc = h / 2
@@ -52,29 +51,29 @@ export function getPoints({ x, y, w, h, r }: Points){
     return { x : Math.floor(item[0] + wc + x), y : Math.floor(-(item[1] - hc) + y) }
   })
 }
-export function getSize({ type, x, y, dis, ratio, pressAngle, startAngle, currentRatio }: Size){
-  let w, h
+export function getSize({ type, x, y, dis, ratio, pressAngle, startAngle, currentRatio }: Size) {
+  let w; let h
   const currentAngle = rad2deg(Math.atan2(y, x))
   const rad = deg2rad(pressAngle + currentAngle - startAngle)
-  if(tr2bl[type]) {
+  if (tr2bl[type]) {
     h = Math.cos(rad) * dis
     w = Math.sin(rad) * dis
   } else {
     h = Math.sin(rad) * dis
     w = Math.cos(rad) * dis
   }
-  if(ratio) {
-    if(widthMap[type]) {
+  if (ratio) {
+    if (widthMap[type]) {
       h = w / currentRatio
     } else {
-      if(heightMap) {
+      if (heightMap) {
         w = h * currentRatio
       }
     }
   }
   return { w, h }
 }
-function getHandler(type: string, rotation: number){
+function getHandler(type: string, rotation: number) {
   const originIndex: number = handlerMap[type] as number
   const currentIndex = (originIndex + Math.floor(rotation / 45)) % 8
   return cursorMap[currentIndex]
@@ -82,43 +81,43 @@ function getHandler(type: string, rotation: number){
 export function getNewHandler(type: string, rotation: number = 0) {
   const cursor = getHandler(type, rotation)
   const handlerSize = 10
-  let props = {};
-  const half = -Math.floor(handlerSize / 2) + 'px';
+  let props = {}
+  const half = `${-Math.floor(handlerSize / 2)}px`
   switch (type) {
   case 'tl':
     props = {
       top: half,
       left: half
-    };
-    break;
+    }
+    break
   case 'tm':
-    props = { top: half, 'marginLeft': half };
-    break;
+    props = { top: half, 'marginLeft': half }
+    break
   case 'tr':
-    props = { right: half, top: half };
-    break;
+    props = { right: half, top: half }
+    break
   case 'r':
-    props = { right: half, 'marginTop': half };
-    break;
+    props = { right: half, 'marginTop': half }
+    break
   case 'br':
-    props = { bottom: half, right: half };
-    break;
+    props = { bottom: half, right: half }
+    break
   case 'bm':
-    props = { 'marginLeft': half, bottom: half };
-    break;
+    props = { 'marginLeft': half, bottom: half }
+    break
   case 'bl':
-    props = { left: half, bottom: half };
-    break;
+    props = { left: half, bottom: half }
+    break
   case 'l':
-    props = { 'marginTop': half, left: half };
-    break;
+    props = { 'marginTop': half, left: half }
+    break
   default:
-    break;
+    break
   }
   return {
-    cursor: cursor + '-resize',
-    width: Math.ceil(handlerSize) + 'px',
-    height: Math.ceil(handlerSize) + 'px',
+    cursor: `${cursor}-resize`,
+    width: `${Math.ceil(handlerSize)}px`,
+    height: `${Math.ceil(handlerSize)}px`,
     ...props
-  };
+  }
 }

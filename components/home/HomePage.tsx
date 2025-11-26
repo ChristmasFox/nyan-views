@@ -2,15 +2,15 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { DisplayGroup } from '@/app/page';
-import { initDisplayData } from '@/utils';
+import { DisplayGroup } from '@/app/page'
+import { initDisplayData } from '@/utils'
 
 interface HomePageProps {
   displayGroups: DisplayGroup[]
 }
 
 export default function HomePage({ displayGroups }: HomePageProps) {
-  const router = useRouter();
+  const router = useRouter()
 
   const [count, setCount] = useState<number>(-1)
   const [inputName, setInputName] = useState<string>('')
@@ -21,27 +21,27 @@ export default function HomePage({ displayGroups }: HomePageProps) {
 
   async function handleEdit(id?: number) {
     if (id) {
-      router.push(`/edit/${id}`);
+      router.push(`/edit/${id}`)
     } else {
       // 新增
       const response = await fetch('/api/display/add', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           displayName: inputName,
           displayData: initDisplayData()
-        }),
+        })
       })
-      const data = await response.json();
-      router.push(`/edit/${data.data.id}`);
+      const data = await response.json()
+      router.push(`/edit/${data.data.id}`)
       router.refresh()
     }
   }
 
   const groupsDom: React.ReactElement[] = []
-  displayGroups.forEach(group => {
+  displayGroups.forEach((group) => {
     groupsDom.push(
       <h1 key={group.id} onClick={() => handleEdit(group.id)}>Ready: {group.displayName}</h1>
     )
@@ -51,11 +51,11 @@ export default function HomePage({ displayGroups }: HomePageProps) {
     const response = await fetch('/api/counter', {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ increment: 1 }),
-    });
-    const data = await response.json();
+      body: JSON.stringify({ increment: 1 })
+    })
+    const data = await response.json()
 
     setCount(data.count)
   }
@@ -69,5 +69,5 @@ export default function HomePage({ displayGroups }: HomePageProps) {
       {groupsDom}
       <h1 onClick={handlePutDB}>TestDB: {count}</h1>
     </>
-  );
+  )
 }
