@@ -8,6 +8,13 @@
       "when": 1763785808219,
       "tag": "0000_free_bushwacker",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1764063276372,
+      "tag": "0001_tranquil_victor_mancha",
+      "breakpoints": true
     }
   ]
 }

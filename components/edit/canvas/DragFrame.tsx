@@ -1,9 +1,8 @@
-import {useRef} from 'react';
-import {ChartData, ElementData} from '@/components/edit/canvas';
-import {getNewHandler} from '@/utils/resize';
-import {useDraggable} from '@/hooks/useDraggable';
-import {useResizable} from '@/hooks/useResizable';
-import {getTime} from '@/utils';
+import { useRef } from 'react';
+import { ChartData, ElementData, getTime } from '@/utils';
+import { getNewHandler } from '@/utils/resize';
+import { useDraggable } from '@/hooks/useDraggable';
+import { useResizable } from '@/hooks/useResizable';
 
 interface Props {
   chartData: ChartData

@@ -1,3 +1,27 @@
+export type ChartData = {
+  w: number,
+  h: number,
+  elements: Array<ElementData>
+}
+
+export type ElementData = {
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number,
+  figureId: number,
+  active: boolean,
+  isHide: boolean,
+}
+export const initDisplayData = (): ChartData => {
+  return {
+    w: 1920,
+    h: 1080,
+    elements: []
+  }
+}
+
 export function isCtrlEvent(event: React.MouseEvent) {
   // 判断不同系统的多选事件
   const isMac = navigator.userAgent.indexOf('Mac OS X') != -1

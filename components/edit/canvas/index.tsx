@@ -1,22 +1,6 @@
 import './css/index.css'
 import AllRender from '@/components/edit/canvas/AllRender';
-
-export type ChartData = {
-  w: number,
-  h: number,
-  elements: Array<ElementData>
-}
-
-export type ElementData = {
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  r: number,
-  figureId: number,
-  active: boolean,
-  isHide: boolean,
-}
+import { ChartData } from '@/utils';
 
 type CanvasProps = {
   pageScale: number,

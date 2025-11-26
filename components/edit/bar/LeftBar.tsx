@@ -1,8 +1,7 @@
 import SvgIcon from '@/components/svgIcon';
 import styles from './leftBar.module.css'
-import { ChartData, ElementData } from '@/components/edit/canvas';
-import { useRef, useEffect } from 'react'
-import { getComponentDraggedPosition, isMouseInnerCanvas } from '@/utils';
+import { ChartData, ElementData, getComponentDraggedPosition, isMouseInnerCanvas } from '@/utils';
+import { useEffect, useRef } from 'react'
 
 interface LeftBarProps {
   pageScale: number,

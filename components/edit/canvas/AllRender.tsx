@@ -1,6 +1,5 @@
 import DragFrame from './DragFrame';
-import { ChartData, ElementData } from '@/components/edit/canvas';
-import { isCtrlEvent } from '@/utils';
+import { ChartData, ElementData, isCtrlEvent } from '@/utils';
 
 type Props = {
   pageScale: number,

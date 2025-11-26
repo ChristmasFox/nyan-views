@@ -1,5 +1,5 @@
 import Matrix from '@/utils/Matrix';
-import {Points, ResizeMap, Size} from '@/types/common';
+import { Points, ResizeMap, Size } from '@/types/common';
 
 const handlerMap: ResizeMap = { 'tl' : 0, 'tm' : 1, 'tr' : 2, 'r' : 3, 'br' : 4, 'bm' : 5, 'bl' : 6, 'l' : 7 }
 const cursorMap = ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w']

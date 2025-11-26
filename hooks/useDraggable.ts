@@ -1,4 +1,4 @@
-import {useEffect, useRef} from 'react';
+import { useEffect, useRef } from 'react';
 
 interface DraggableProps {
   dragMove(deltaX: number, deltaY: number): void;
@@ -41,11 +41,11 @@ export const useDraggable = ({ dragMove, dragEnd }: DraggableProps): DraggableRe
     if (event.buttons == 2) return
     cancelAnimationFrame(animationFrame.current);
     animationFrame.current = requestAnimationFrame(() => {
-      const {clientX, clientY} = event;
+      const { clientX, clientY } = event;
       const deltaX = clientX - lastStation.current.x;
       const deltaY = clientY - lastStation.current.y;
 
-      lastStation.current = {x: clientX, y: clientY}
+      lastStation.current = { x: clientX, y: clientY }
       dragMoveRef.current(deltaX, deltaY)
     })
   }

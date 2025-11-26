@@ -1,6 +1,6 @@
-import {useEffect, useRef} from 'react';
-import {ChartData, ElementData} from '@/components/edit/canvas';
-import {getPoints, getSize, heightMap, pointMap, rad2deg, tr2bl, widthMap} from '@/utils/resize';
+import { useEffect, useRef } from 'react';
+import { ChartData, ElementData } from '@/utils';
+import { getPoints, getSize, heightMap, pointMap, rad2deg, tr2bl, widthMap } from '@/utils/resize';
 
 interface ResizableProps {
   wrapper: React.RefObject<HTMLElement | null>;
@@ -64,7 +64,7 @@ export const useResizable = ({ wrapper, chartData, elementData, resize, pageScal
     const type = target.dataset.resizetype;
     if (!_parentRect.current || !type) return
 
-    const {clientX, clientY} = event;
+    const { clientX, clientY } = event;
 
     const matrix = getPoints(elementData);
     let pressAngle;
@@ -143,7 +143,7 @@ export const useResizable = ({ wrapper, chartData, elementData, resize, pageScal
     transform.y = Math.max(0, Math.min(transform.y, chartData.h - transform.h));
     _resizeOpt.current.currentRatio = currentRatio;
 
-    resizeRef.current({...transform})
+    resizeRef.current({ ...transform })
   }
 
   return [handleMouseDown]

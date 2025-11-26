@@ -5,35 +5,16 @@ import './editLayout.css'
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { LeftBar } from '@/components/edit/bar/LeftBar';
+import { ChartData } from '@/utils';
 
-export default function EditLayout() {
+interface EditLayoutProps {
+  displayData: ChartData,
+  displayId: string
+}
+
+export default function EditLayout({ displayId, displayData }: EditLayoutProps) {
   const [pageScale, setPageScale] = useState(1)
-  const [chartData, setChartData] = useState({
-    w: 1920,
-    h: 1080,
-    elements: [
-      {
-        x: 0,
-        y: 0,
-        w: 100,
-        h: 100,
-        r: 0,
-        figureId: 1,
-        active: false,
-        isHide: false,
-      },
-      {
-        x: 101,
-        y: 0,
-        w: 130,
-        h: 130,
-        r: 0,
-        figureId: 2,
-        active: false,
-        isHide: false,
-      }
-    ]
-  })
+  const [chartData, setChartData] = useState<ChartData>({ ...displayData })
 
   const canvasWrapper = useRef<HTMLDivElement | null>(null);
 
@@ -68,10 +49,35 @@ export default function EditLayout() {
     }
   }, [canvasWrapper, handleAdd, handleRemove]);
 
+  async function handleSave() {
+    const response = await fetch('/api/display/saveDisplay', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: displayId,
+        displayData: {
+          ...chartData,
+          elements: [
+            ...chartData.elements.map((e) => ({ ...e, active: false })),
+          ]
+        },
+      }),
+    })
+    const data = await response.json()
+    if (data.success) {
+      alert('保存成功')
+    } else {
+      alert('保存失败')
+    }
+  }
+
   return (
     <div className="layout">
       <div className="layout__topbar text-center bg-amber-900 text-amber-200">
         @nyan-views@nyan-views@nyan-views@nyan-views
+        <button onClick={handleSave}>保存</button>
       </div>
       <div className="layout__wrapper">
         <div className="left-sidebar text-amber-50">
