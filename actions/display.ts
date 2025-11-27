@@ -42,3 +42,10 @@ export async function saveDisplayPage(id: number, displayData: ChartData) {
   revalidatePath(`/edit/${id}`)
   return data?.[0]?.id
 }
+
+// 删除大屏
+export async function delDisplayPage(id: number) {
+  await db.delete(displaySchema).where(eq(displaySchema.id, Number(id)))
+  // 重新验证
+  revalidatePath('/')
+}

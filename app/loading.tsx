@@ -1,5 +1,7 @@
+import DefaultLoading from '@/components/ui/loading'
+
 export default function Loading() {
   return (
-    <div>Loading...</div>
+    <DefaultLoading></DefaultLoading>
   )
 }

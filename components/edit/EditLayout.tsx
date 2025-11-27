@@ -7,13 +7,17 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { LeftBar } from '@/components/edit/bar/LeftBar'
 import { ChartData } from '@/utils'
 import { saveDisplayPage } from '@/actions/display'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 interface EditLayoutProps {
-  displayData: ChartData,
+  displayData: ChartData
+  displayName: string
   displayId: string
 }
 
-export default function EditLayout({ displayId, displayData }: EditLayoutProps) {
+export default function EditLayout({ displayId, displayName, displayData }: EditLayoutProps) {
+  const router = useRouter()
   const [pageScale, setPageScale] = useState(1)
   const [chartData, setChartData] = useState<ChartData>({ ...displayData })
 
@@ -59,16 +63,19 @@ export default function EditLayout({ displayId, displayData }: EditLayoutProps) 
     }
     const id = await saveDisplayPage(Number(displayId), displayData)
     if (id) {
-      alert('保存成功')
+      toast.success('保存成功!')
     } else {
-      alert('保存失败')
+      toast.error('保存失败!')
     }
   }
 
   return (
     <div className="layout">
       <div className="layout__topbar text-center bg-amber-900 text-amber-200">
-        @nyan-views@nyan-views@nyan-views@nyan-views
+        <button onClick={() => router.push('/')}>返回</button>
+        @nyan-views@nyan-views
+        <span className="text-amber-50 ml-2 mr-2">{ displayName }</span>
+        @nyan-views@nyan-views
         <button onClick={handleSave}>保存</button>
       </div>
       <div className="layout__wrapper">
