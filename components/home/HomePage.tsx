@@ -3,7 +3,9 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { DisplayGroup } from '@/app/page'
-import { initDisplayData } from '@/utils'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { addDisplayPage } from '@/actions/display'
 
 interface HomePageProps {
   displayGroups: DisplayGroup[]
@@ -23,27 +25,18 @@ export default function HomePage({ displayGroups }: HomePageProps) {
     if (id) {
       router.push(`/edit/${id}`)
     } else {
-      // 新增
-      const response = await fetch('/api/display/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          displayName: inputName,
-          displayData: initDisplayData()
-        })
-      })
-      const data = await response.json()
-      router.push(`/edit/${data.data.id}`)
-      router.refresh()
+      try {
+        await addDisplayPage(inputName)
+      } catch (e) {
+        console.error('Error creating new display group:', e)
+      }
     }
   }
 
   const groupsDom: React.ReactElement[] = []
   displayGroups.forEach((group) => {
     groupsDom.push(
-      <h1 key={group.id} onClick={() => handleEdit(group.id)}>Ready: {group.displayName}</h1>
+      <Button key={group.id} variant="outline" onClick={() => handleEdit(group.id)}>Ready: {group.displayName}</Button>
     )
   })
 
@@ -62,11 +55,15 @@ export default function HomePage({ displayGroups }: HomePageProps) {
 
   return (
     <>
-      <div>
-        <input type="text" value={inputName} onChange={handleChange}/>
-        <h1 onClick={() => handleEdit()}>Create: CreateNewNewNew</h1>
+      <div className="flex w-full max-w-sm items-center gap-2">
+        <Input type="text" value={inputName} onChange={handleChange} />
+        <Button variant="outline" onClick={() => handleEdit()} >
+          Create: CreateNewNewNew
+        </Button>
       </div>
-      {groupsDom}
+      <div className="flex flex-col gap-2 mt-4">
+        {groupsDom}
+      </div>
       <h1 onClick={handlePutDB}>TestDB: {count}</h1>
     </>
   )

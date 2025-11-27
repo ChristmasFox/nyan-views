@@ -6,6 +6,7 @@ import './editLayout.css'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { LeftBar } from '@/components/edit/bar/LeftBar'
 import { ChartData } from '@/utils'
+import { saveDisplayPage } from '@/actions/display'
 
 interface EditLayoutProps {
   displayData: ChartData,
@@ -50,23 +51,14 @@ export default function EditLayout({ displayId, displayData }: EditLayoutProps) 
   }, [canvasWrapper, handleAdd, handleRemove])
 
   async function handleSave() {
-    const response = await fetch('/api/display/saveDisplay', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        id: displayId,
-        displayData: {
-          ...chartData,
-          elements: [
-            ...chartData.elements.map((e) => ({ ...e, active: false }))
-          ]
-        }
-      })
-    })
-    const data = await response.json()
-    if (data.success) {
+    const displayData = {
+      ...chartData,
+      elements: [
+        ...chartData.elements.map((e) => ({ ...e, active: false }))
+      ]
+    }
+    const id = await saveDisplayPage(Number(displayId), displayData)
+    if (id) {
       alert('保存成功')
     } else {
       alert('保存失败')

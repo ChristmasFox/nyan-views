@@ -2,12 +2,13 @@ import EditLayout from '@/components/edit/EditLayout'
 import { db } from '@/libs/DB'
 import { eq } from 'drizzle-orm'
 import { displaySchema } from '@/models/Schema'
+import { Suspense } from 'react'
 
 interface EditProps {
   params: Promise<{ id: string }>
 }
 
-export default async function Edit({ params }: EditProps) {
+async function GetDisplayPage({ params }: EditProps) {
   const { id } = await params
   const data = await db
     .query
@@ -17,8 +18,16 @@ export default async function Edit({ params }: EditProps) {
     })
   const displayData = data?.displayData ? JSON.parse(data.displayData) : null
   return (
+    <EditLayout displayId={id} displayData={displayData}></EditLayout>
+  )
+}
+
+export default async function Edit({ params }: EditProps) {
+  return (
     <>
-      {displayData ? <EditLayout displayId={id} displayData={displayData}></EditLayout> : <div>无数据</div>}
+      <Suspense fallback={<div>Loading111...</div>}>
+        <GetDisplayPage params={params}></GetDisplayPage>
+      </Suspense>
     </>
   )
 }
