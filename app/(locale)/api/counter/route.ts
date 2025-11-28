@@ -1,8 +1,18 @@
 import { db } from '@/libs/DB'
 import { sql } from 'drizzle-orm'
 import { counterSchema } from '@/models/Schema'
-import { NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 import { headers } from 'next/headers'
+
+export async function POST(request: NextRequest) {
+  const body: { amount: number } = await request.json()
+  const { amount = 1 } = body
+
+  // simulate IO latency
+  await new Promise((resolve) => setTimeout(resolve, 500))
+
+  return NextResponse.json({ data: amount })
+}
 
 export const PUT = async (request: Request) => {
   const json = await request.json()

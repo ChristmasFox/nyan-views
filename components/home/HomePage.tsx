@@ -16,6 +16,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from '@/components/ui/alert-dialog'
+import ReduxTest from '@/components/home/ReduxTest'
 
 interface HomePageProps {
   displayGroups: DisplayGroup[]
@@ -75,6 +76,7 @@ export default function HomePage({ displayGroups }: HomePageProps) {
         {groupsDom}
       </div>
       <h1 onClick={handlePutDB}>TestDB: {count}</h1>
+      <ReduxTest></ReduxTest>
     </div>
   )
 }
