@@ -1,14 +1,15 @@
 import DragFrame from './DragFrame'
 import { ChartData, ElementData, isCtrlEvent } from '@/utils'
+import { ChartDataAction } from '@/components/edit/EditLayout'
 
 type Props = {
   pageScale: number,
   chartData: ChartData,
   elementData: ElementData,
-  setChartData: React.Dispatch<React.SetStateAction<ChartData>>
+  chartDataDispatch: React.Dispatch<Partial<ChartDataAction>>
 }
 
-export default function AllRender({ chartData, elementData, pageScale, setChartData }: Props) {
+export default function AllRender({ chartData, elementData, pageScale, chartDataDispatch }: Props) {
   function dragEnd() {
   }
 
@@ -31,34 +32,36 @@ export default function AllRender({ chartData, elementData, pageScale, setChartD
       }
     })
 
-    setChartData({
-      ...chartData,
+    chartDataDispatch({
+      type: 'UPDATE_ELEMENTS',
       elements: newElements
     })
   }
 
   function handleClick(event: React.MouseEvent) {
     const isCtrl = isCtrlEvent(event)
-    setChartData({
-      ...chartData,
-      elements: chartData.elements.map((el) => {
-        return {
-          ...el,
-          active: el.figureId === elementData.figureId || (isCtrl && el.active)
-        }
-      })
+    const newElements = chartData.elements.map((el) => {
+      return {
+        ...el,
+        active: el.figureId === elementData.figureId || (isCtrl && el.active)
+      }
+    })
+    chartDataDispatch({
+      type: 'UPDATE_ELEMENTS',
+      elements: newElements
     })
   }
   function resize(newElementData: ElementData) {
-    setChartData({
-      ...chartData,
-      elements: chartData.elements.map((el) => {
-        if (el.figureId === newElementData.figureId) {
-          return newElementData
-        } else {
-          return el
-        }
-      })
+    const newElements = chartData.elements.map((el) => {
+      if (el.figureId === newElementData.figureId) {
+        return newElementData
+      } else {
+        return el
+      }
+    })
+    chartDataDispatch({
+      type: 'UPDATE_ELEMENTS',
+      elements: newElements
     })
   }
 

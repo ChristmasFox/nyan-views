@@ -1,14 +1,15 @@
 import './css/index.css'
 import AllRender from '@/components/edit/canvas/AllRender'
 import { ChartData } from '@/utils'
+import { ChartDataAction } from '@/components/edit/EditLayout'
 
 type CanvasProps = {
   pageScale: number,
   chartData: ChartData,
-  setChartData: React.Dispatch<React.SetStateAction<ChartData>>
+  chartDataDispatch: React.Dispatch<Partial<ChartDataAction>>
 }
 
-export default function Canvas({ pageScale, chartData, setChartData }: CanvasProps) {
+export default function Canvas({ pageScale, chartData, chartDataDispatch }: CanvasProps) {
   const screenStyle = {
     transform: `scale(${pageScale})`,
     transformDrag: `1/scale(${pageScale})`,
@@ -24,20 +25,14 @@ export default function Canvas({ pageScale, chartData, setChartData }: CanvasPro
         chartData={chartData}
         elementData={element}
         pageScale={pageScale}
-        setChartData={setChartData}
+        chartDataDispatch={chartDataDispatch}
       />
     )
   })
 
   function handleClick() {
-    setChartData({
-      ...chartData,
-      elements: chartData.elements.map((element) => {
-        return {
-          ...element,
-          active: false
-        }
-      })
+    chartDataDispatch({
+      type: 'CANCEL_ACTIVE'
     })
   }
 

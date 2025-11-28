@@ -84,35 +84,35 @@ export function getNewHandler(type: string, rotation: number = 0) {
   let props = {}
   const half = `${-Math.floor(handlerSize / 2)}px`
   switch (type) {
-  case 'tl':
-    props = {
-      top: half,
-      left: half
-    }
-    break
-  case 'tm':
-    props = { top: half, 'marginLeft': half }
-    break
-  case 'tr':
-    props = { right: half, top: half }
-    break
-  case 'r':
-    props = { right: half, 'marginTop': half }
-    break
-  case 'br':
-    props = { bottom: half, right: half }
-    break
-  case 'bm':
-    props = { 'marginLeft': half, bottom: half }
-    break
-  case 'bl':
-    props = { left: half, bottom: half }
-    break
-  case 'l':
-    props = { 'marginTop': half, left: half }
-    break
-  default:
-    break
+    case 'tl':
+      props = {
+        top: half,
+        left: half
+      }
+      break
+    case 'tm':
+      props = { top: half, 'marginLeft': half }
+      break
+    case 'tr':
+      props = { right: half, top: half }
+      break
+    case 'r':
+      props = { right: half, 'marginTop': half }
+      break
+    case 'br':
+      props = { bottom: half, right: half }
+      break
+    case 'bm':
+      props = { 'marginLeft': half, bottom: half }
+      break
+    case 'bl':
+      props = { left: half, bottom: half }
+      break
+    case 'l':
+      props = { 'marginTop': half, left: half }
+      break
+    default:
+      break
   }
   return {
     cursor: `${cursor}-resize`,

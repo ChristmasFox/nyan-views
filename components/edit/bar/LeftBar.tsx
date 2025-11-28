@@ -2,14 +2,15 @@ import SvgIcon from '@/components/svgIcon'
 import styles from './leftBar.module.css'
 import { ChartData, ElementData, getComponentDraggedPosition, isMouseInnerCanvas } from '@/utils'
 import { useEffect, useRef } from 'react'
+import { ChartDataAction } from '@/components/edit/EditLayout'
 
 interface LeftBarProps {
   pageScale: number,
   chartData: ChartData,
-  setChartData: React.Dispatch<React.SetStateAction<ChartData>>
+  chartDataDispatch: React.Dispatch<Partial<ChartDataAction>>
 }
 
-export function LeftBar({ chartData, setChartData, pageScale }: LeftBarProps) {
+export function LeftBar({ chartData, chartDataDispatch, pageScale }: LeftBarProps) {
   const drag = useRef<boolean>(false)
   const canvasPosition = useRef<DOMRect>(undefined)
   const nextFigureIdRef = useRef<number>(0)
@@ -39,12 +40,9 @@ export function LeftBar({ chartData, setChartData, pageScale }: LeftBarProps) {
       element.y = 10
     }
 
-    setChartData({
-      ...chartData,
-      elements: [
-        ...chartData.elements.map((e) => ({ ...e, active: false })),
-        element
-      ]
+    chartDataDispatch({
+      type: 'ADD_ELEMENT',
+      element
     })
   }
 

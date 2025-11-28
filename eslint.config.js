@@ -16,7 +16,48 @@ const eslintConfig = defineConfig([
   {
     rules: {
       eqeqeq: 'off',
-      indent: ['error', 2],
+      indent: [
+        'error',
+        2,
+        {
+          SwitchCase: 1,
+          VariableDeclarator: 1,
+          outerIIFEBody: 1,
+          // MemberExpression: null,
+          FunctionDeclaration: {
+            parameters: 1,
+            body: 1
+          },
+          FunctionExpression: {
+            parameters: 1,
+            body: 1
+          },
+          CallExpression: {
+            arguments: 1
+          },
+          ArrayExpression: 1,
+          ObjectExpression: 1,
+          ImportDeclaration: 1,
+          flatTernaryExpressions: false,
+          // list derived from https://github.com/benjamn/ast-types/blob/HEAD/def/jsx.js
+          ignoredNodes: [
+            'JSXElement',
+            'JSXElement > *',
+            'JSXAttribute',
+            'JSXIdentifier',
+            'JSXNamespacedName',
+            'JSXMemberExpression',
+            'JSXSpreadAttribute',
+            'JSXExpressionContainer',
+            'JSXOpeningElement',
+            'JSXClosingElement',
+            'JSXText',
+            'JSXEmptyExpression',
+            'JSXSpreadChild'
+          ],
+          ignoreComments: false
+        }
+      ],
       // 关闭 JS 原生的 no-unused-vars 规则 (无法理解Ts, 会误报 Type 定义)
       'no-unused-vars': 'off',
       // 开启 TS 专用规则 @typescript-eslint/no-unused-vars
