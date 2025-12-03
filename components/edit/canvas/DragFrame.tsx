@@ -3,6 +3,7 @@ import { ChartData, ElementData, getTime } from '@/utils'
 import { getNewHandler } from '@/utils/resize'
 import { useDraggable } from '@/hooks/useDraggable'
 import { useResizable } from '@/hooks/useResizable'
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu'
 
 interface Props {
   chartData: ChartData
@@ -11,13 +12,13 @@ interface Props {
   pageScale: number;
   isActive: boolean;
   onClick: React.MouseEventHandler;
+  onContextMenu: (action: string, figureId: number) => void;
   dragEnd(): void;
-
   dragMove(deltaX: number, deltaY: number): void;
   resize(elementData: ElementData): void;
 }
 
-export default function DragFrame({ chartData, children, elementData, pageScale, dragMove, dragEnd, onClick, isActive, resize }: Props) {
+export default function DragFrame({ chartData, children, elementData, pageScale, dragMove, dragEnd, onClick, onContextMenu, isActive, resize }: Props) {
   const lastDownTimer = useRef(0)
   const wrapper = useRef(null)
 
@@ -52,7 +53,7 @@ export default function DragFrame({ chartData, children, elementData, pageScale,
 
   function handleMouseDown(event: React.MouseEvent) {
     lastDownTimer.current = getTime()
-
+    if (event.buttons == 2) return
     const target = event.target as HTMLElement
     if (target.dataset.resizetype) {
       handleMouseDownResize(event)
@@ -69,20 +70,32 @@ export default function DragFrame({ chartData, children, elementData, pageScale,
     }
   }
 
+  function handleContextMenu(event: React.MouseEvent) {
+    onClick(event)
+  }
+
   return (
-    <div
-      ref={wrapper}
-      className={isActive ? 'drag-container active' : 'drag-container'}
-      style={{
-        width: `${elementData.w}px`,
-        height: `${elementData.h}px`,
-        transform: `translate(${elementData.x}px, ${elementData.y}px)`
-      }}
-      onClick={handleClick}
-      onMouseDown={handleMouseDown}
-    >
-      { children }
-      { isActive && resizeFrame }
-    </div>
+    <ContextMenu>
+      <ContextMenuTrigger>
+        <div
+          ref={wrapper}
+          className={isActive ? 'drag-container active' : 'drag-container'}
+          style={{
+            width: `${elementData.w}px`,
+            height: `${elementData.h}px`,
+            transform: `translate(${elementData.x}px, ${elementData.y}px)`
+          }}
+          onClick={handleClick}
+          onContextMenu={handleContextMenu}
+          onMouseDown={handleMouseDown}
+        >
+          { children }
+          { isActive && resizeFrame }
+        </div>
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        <ContextMenuItem inset onClick={() => onContextMenu('DELETE', elementData.figureId)}>删除</ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
   )
 }

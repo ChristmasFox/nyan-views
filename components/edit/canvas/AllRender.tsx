@@ -39,7 +39,7 @@ export default function AllRender({ chartData, elementData, pageScale, chartData
   }
 
   function handleClick(event: React.MouseEvent) {
-    const isCtrl = isCtrlEvent(event)
+    const isCtrl = isCtrlEvent(event) && event.buttons !== 2
     const newElements = chartData.elements.map((el) => {
       return {
         ...el,
@@ -64,6 +64,20 @@ export default function AllRender({ chartData, elementData, pageScale, chartData
       elements: newElements
     })
   }
+  function handleContextMenu(action: string, figureId: number) {
+    switch (action) {
+      case 'DELETE': {
+        const newElements = chartData.elements.filter((el) => el.figureId !== figureId)
+        chartDataDispatch({
+          type: 'UPDATE_ELEMENTS',
+          elements: newElements
+        })
+        return
+      }
+      default:
+        return
+    }
+  }
 
   return (
     <DragFrame
@@ -74,6 +88,7 @@ export default function AllRender({ chartData, elementData, pageScale, chartData
       dragEnd={dragEnd}
       dragMove={dragMove}
       onClick={handleClick}
+      onContextMenu={handleContextMenu}
       resize={resize}
     >
       <div>
