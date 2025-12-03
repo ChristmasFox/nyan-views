@@ -20,6 +20,10 @@ export interface ChartDataAction {
   element?: ElementData
   elements: ElementData[]
 }
+interface handleEventRefType {
+  handleAdd: () => void
+  handleRemove: () => void
+}
 
 function chartDataReducer(state: ChartData, action: Partial<ChartDataAction>): ChartData {
   switch (action.type) {
@@ -64,12 +68,21 @@ export default function EditLayout({ displayId, displayName, displayData }: Edit
   const canvasWrapper = useRef<HTMLDivElement | null>(null)
 
   const handleAdd = useCallback(() => {
-    setPageScale(Number((pageScale + 0.01).toFixed(2)))
-  }, [pageScale])
+    setPageScale((p) => Number((p + 0.01).toFixed(2)))
+  }, [])
 
   const handleRemove = useCallback(() => {
-    setPageScale(Number((pageScale - 0.01).toFixed(2)))
-  }, [pageScale])
+    setPageScale((p) => Number((p - 0.01).toFixed(2)))
+  }, [])
+
+  const handleEventRef = useRef<handleEventRefType>({ handleAdd, handleRemove })
+
+  useEffect(() => {
+    handleEventRef.current = {
+      handleAdd,
+      handleRemove
+    }
+  }, [handleAdd, handleRemove])
 
   useEffect(() => {
     const canvasWrapperRef = canvasWrapper.current
@@ -79,11 +92,11 @@ export default function EditLayout({ displayId, displayName, displayData }: Edit
         event.stopPropagation()
         if (event.deltaY < 0) {
           // 鼠标滚轮往下滚动
-          handleAdd()
+          handleEventRef.current.handleAdd()
         }
         if (event.deltaY > 0) {
           // 鼠标滚轮往上滚动
-          handleRemove()
+          handleEventRef.current.handleRemove()
         }
       }
     }
@@ -92,7 +105,7 @@ export default function EditLayout({ displayId, displayName, displayData }: Edit
     return () => {
       if (canvasWrapperRef) canvasWrapperRef.removeEventListener('wheel', handleWheel)
     }
-  }, [canvasWrapper, handleAdd, handleRemove])
+  }, [canvasWrapper])
 
   async function handleSave() {
     const displayData = {
