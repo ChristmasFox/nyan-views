@@ -1,10 +1,10 @@
 'use client'
 
 import Canvas from '@/components/edit/canvas'
-import './editLayout.css'
 
 import { useCallback, useEffect, useRef, useState, useReducer } from 'react'
-import { LeftBar } from '@/components/edit/bar/LeftBar'
+import LeftBar from '@/components/edit/bar/LeftBar'
+import RightBar from '@/components/edit/bar/RightBar'
 import { ChartData, ElementData } from '@/utils'
 import { saveDisplayPage } from '@/actions/display'
 import { toast } from 'sonner'
@@ -62,7 +62,6 @@ function chartDataReducer(state: ChartData, action: Partial<ChartDataAction>): C
 export default function EditLayout({ displayId, displayName, displayData }: EditLayoutProps) {
   const router = useRouter()
   const [pageScale, setPageScale] = useState(1)
-  // const [chartData, setChartData] = useState<ChartData>({ ...displayData })
   const [chartData, dispatch] = useReducer(chartDataReducer, { ...displayData })
 
   const canvasWrapper = useRef<HTMLDivElement | null>(null)
@@ -123,23 +122,26 @@ export default function EditLayout({ displayId, displayName, displayData }: Edit
   }
 
   return (
-    <div className="layout">
-      <div className="layout__topbar text-center bg-amber-900 text-amber-200">
+    <div className="dark w-full h-full flex flex-col user-select-none">
+      <div className="text-center bg-amber-900 text-amber-200">
         <button onClick={() => router.push('/')}>返回</button>
         @nyan-views@nyan-views
         <span className="text-amber-50 ml-2 mr-2">{ displayName }</span>
         @nyan-views@nyan-views
         <button onClick={handleSave}>保存</button>
       </div>
-      <div className="layout__wrapper">
-        <div className="left-sidebar text-amber-50">
+      <div className="flex flex-1 w-full overflow-hidden">
+        <div className="w-[250px] h-full bg-[#121316] border-r border-r-solid border-r-[#22242a] text-amber-50">
           <LeftBar chartData={chartData} chartDataDispatch={dispatch} pageScale={pageScale}></LeftBar>
         </div>
-        <div className="main">
-          <div ref={canvasWrapper} className="canvas__wrapper">
+        <div className="flex-1 h-full overflow-hidden relative bg-[#1c1e23]">
+          <div ref={canvasWrapper} className="w-full h-[calc(100%-40px)] px-[12px] py-[20px] relative overflow-auto">
             <Canvas chartData={chartData} chartDataDispatch={dispatch} pageScale={pageScale}></Canvas>
           </div>
-          <div className="canvas__bar"></div>
+          <div className="h-[40px] bg-[#121316] text-amber-50"></div>
+        </div>
+        <div className="w-[250px] h-full bg-[#121316] text-amber-50">
+          <RightBar chartData={chartData} chartDataDispatch={dispatch}></RightBar>
         </div>
       </div>
     </div>

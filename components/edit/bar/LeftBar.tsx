@@ -10,7 +10,7 @@ interface LeftBarProps {
   chartDataDispatch: React.Dispatch<Partial<ChartDataAction>>
 }
 
-export function LeftBar({ chartData, chartDataDispatch, pageScale }: LeftBarProps) {
+export default function LeftBar({ chartData, chartDataDispatch, pageScale }: LeftBarProps) {
   const drag = useRef<boolean>(false)
   const canvasPosition = useRef<DOMRect>(undefined)
   const nextFigureIdRef = useRef<number>(0)
