@@ -10,6 +10,26 @@ html, body {
 	padding: 0;
 }
 
+/* 减少移动端双击缩放延迟，改善按钮首点响应 */
+html {
+	touch-action: manipulation;
+}
+
+/*
+ * Sonner 在 body 下挂一层 <section aria-live="polite" tabindex="-1">。
+ * iOS WKWebView（含 iPhone 上的 Chrome，内核同为 Safari）在部分系统版本下
+ * 该层会错误参与触摸命中，导致整页按钮「点了没反应」。
+ * 根层穿透点击；toast 列表与单条 toast 再显式接收事件。
+ */
+body > section[tabindex="-1"][aria-live="polite"] {
+	pointer-events: none;
+}
+
+[data-sonner-toaster],
+[data-sonner-toast] {
+	pointer-events: auto;
+}
+
 ::-webkit-scrollbar {
 	/*滚动条整体样式*/
 	width: 8px; /*高宽分别对应横竖滚动条的尺寸*/

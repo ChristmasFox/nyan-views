@@ -47,7 +47,8 @@ export function getPoints({ x, y, w, h, r }: Points) {
     [wc, -hc],
     [-wc, -hc]
   ])
-  return deg.dot(rect.T()).T().valueOf().map((item: [number, number]) => {
+  const rotated = deg.dot(rect.T()) as Matrix
+  return rotated.T().valueOf().map((item: [number, number]) => {
     return { x : Math.floor(item[0] + wc + x), y : Math.floor(-(item[1] - hc) + y) }
   })
 }

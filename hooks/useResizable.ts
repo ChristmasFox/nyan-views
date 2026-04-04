@@ -68,7 +68,9 @@ export const useResizable = ({ wrapper, chartData, elementData, resize, pageScal
 
     const matrix = getPoints(elementData)
     let pressAngle
-    const opposite = matrix[pointMap[type]]
+    const corner = pointMap[type as keyof typeof pointMap]
+    if (corner === undefined) return
+    const opposite = matrix[corner]
     const x1 = (clientX - _parentRect.current.left) / pageScale - opposite.x
     const y1 = (clientY - _parentRect.current.top) / pageScale - opposite.y
     let _width = elementData.w
@@ -133,7 +135,9 @@ export const useResizable = ({ wrapper, chartData, elementData, resize, pageScal
     transform.h = Math.round(transform.h)
     currentRatio = transform.w / transform.h
     const matrix = getPoints(transform)
-    const _opp = matrix[pointMap[type]]
+    const corner2 = pointMap[type as keyof typeof pointMap]
+    if (corner2 === undefined) return
+    const _opp = matrix[corner2]
     const deltaX = -(_opp.x - opposite.x)
     const deltaY = -(_opp.y - opposite.y)
     transform.x = Math.round(transform.x + deltaX)
